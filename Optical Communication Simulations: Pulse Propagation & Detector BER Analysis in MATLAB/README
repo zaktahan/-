@@ -1,0 +1,17 @@
+# Optical Communication Simulations
+
+MATLAB simulations for optical communication, covering pulse propagation in fibers and BER analysis for photodetectors.
+
+## Overview
+
+**Exercise 1:** Pulse propagation
+- Gaussian and Sech pulses
+- Time/frequency domain analysis
+- Pulse broadening and maximum bit rate
+- Multi-bit sequences
+
+**Exercise 2:** Detector BER
+- PIN and Avalanche photodiodes
+- BER vs received power
+- Thermal and shot noise simulation
+- Histograms of detector currents
