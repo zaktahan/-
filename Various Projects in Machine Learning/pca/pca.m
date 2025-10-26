@@ -1,6 +1,5 @@
 % clear all
 % close all
-% load('facesData.mat')
 % Divide the dataset into training and testing sets with a 9:2 ratio:
 % Training uses the first 9 images out of 11 for each person, while testing uses the last 2.
 num_people = 15;
@@ -88,3 +87,4 @@ title('Success rate \propto Number of dimensions');
 xlabel('Number of dimensions');
 ylabel('Success rate');
 legend('Stable with ~120 dimensions', 'Location', 'east');
+
