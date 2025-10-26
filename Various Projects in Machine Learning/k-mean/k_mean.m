@@ -1,4 +1,3 @@
-%in order to run this file you need to upload the mnist file too
 % clear all;
 % close all;
 matrix_cell_array = {train0, train1, train2, train3, train4, train5, train6, train7, train8, train9};
@@ -51,3 +50,4 @@ ylabel('Cost', 'FontSize', 12);
 title('Cost over number of iterations', 'FontSize', 15);
 
 grid on;
+
