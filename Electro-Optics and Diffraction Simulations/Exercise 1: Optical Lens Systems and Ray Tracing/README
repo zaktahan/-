@@ -1,1 +1,15 @@
+# Exercise 1: Optical Lens Systems and Ray Tracing
 
+This MATLAB exercise simulates and analyzes various optical lens systems, including:
+
+- Calculation of refractive indices for different materials (BK7, F2) as a function of wavelength.
+- S-polarization transmission through thin films.
+- ABCD matrix analysis for lens systems.
+- Ray tracing through bi-convex and achromatic lenses.
+- Visualization of focal lengths and ray propagation.
+
+## Files
+- `main.m`: Main script to run all simulations.
+- `functions/n_BK7.m`: Computes refractive index of BK7 glass.
+- `functions/n_F2.m`: Computes refractive index of F2 glass.
+- `functions/bk7RayTrace.m`: Function for ray tracing through a bi-convex lens.
