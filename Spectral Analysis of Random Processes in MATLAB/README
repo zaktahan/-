@@ -1,0 +1,1 @@
+Comprehensive MATLAB project focused on spectral analysis of random processes. Includes calculation of variance, power spectrum, periodogram, correlogram, and performance evaluation (bias, variance, MSE) using methods such as Bartlett, Welch, and Blackman-Tukey. Provides hands-on implementation and visualization of key signal processing techniques.
