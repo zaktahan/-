@@ -1,1 +1,21 @@
+Overview
 
+This exercise demonstrates custom audio resampling using polyphase filters. It covers:
+
+Upsampling and downsampling of audio signals.
+
+L-normalized vs. M-normalized output comparison.
+
+Spectral analysis with FFT to verify resampling quality.
+
+Comparison with MATLAB's built-in resample function.
+
+Playback of original and processed signals for auditory inspection.
+
+Instructions
+
+Update the audio file paths to match your system.
+
+Run the main.m script in MATLAB.
+
+Observe the spectral plots and listen to the processed audio.
