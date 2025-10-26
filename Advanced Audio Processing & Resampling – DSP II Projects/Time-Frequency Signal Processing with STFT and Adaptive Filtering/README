@@ -1,1 +1,23 @@
+Overview
 
+This exercise explores Short-Time Fourier Transform (STFT) and time-varying filtering:
+
+STFT analysis of audio signals with various synthesis methods (FBS, WOLA, No Overlap).
+
+Windowing techniques and overlap management for accurate reconstruction.
+
+Filtering in the frequency domain using time-varying filters.
+
+Reconstruction of signals via inverse STFT.
+
+Evaluation of reconstruction quality using SNR and visual comparison.
+
+Instructions
+
+Update the audio file path to match your system.
+
+Run the main.m script in MATLAB.
+
+Examine spectrograms, reconstructed signals, and listen to filtered audio outputs.
+
+Do not run the entire script at once. Execute the code section by section according to your choice, to better observe intermediate results and avoid conflicts.
