@@ -1,7 +1,5 @@
-%% Optical and Lens Simulation - Ilai Zaidel
 % This MATLAB script calculates transmission, focal lengths, and ray tracing
 % for different lenses and wavelengths using BK7 and F2 glass models.
-% Author: Ilai Zaidel
 
 %% --------- Setup ---------
 close all; 
@@ -170,3 +168,4 @@ end
 
 ray = [ray_before, ray_after];
 end
+
