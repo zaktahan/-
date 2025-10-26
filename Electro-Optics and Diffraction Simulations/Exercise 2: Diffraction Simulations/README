@@ -1,1 +1,16 @@
+# Exercise 2: Diffraction Simulations
+
+This MATLAB exercise explores diffraction patterns using Fresnel and Fraunhofer approximations:
+
+- Creation of circular apertures.
+- 2D FFT of aperture function for spectral analysis.
+- Fraunhofer diffraction pattern calculations and visualization.
+- Fresnel diffraction simulations for different propagation distances.
+- Calculation of Full Width at Half Maximum (FWHM) for diffraction patterns.
+
+## Files
+- `main.m`: Main script to run all simulations.
+- `functions/propFresnel.m`: Computes Fresnel diffraction field.
+- `functions/circ.m`: Defines circular aperture.
+- `functions/interp_FWHM.m`: Interpolates field and calculates FWHM.
 
