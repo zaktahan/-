@@ -1,1 +1,31 @@
+This folder contains two advanced digital signal processing projects from the DSP II course (Bar-Ilan University). Each subfolder represents a separate exercise focused on different aspects of audio signal processing.
 
+Project Structure
+
+Exercise 1 – Audio Resampling
+
+Custom implementation of signal resampling using polyphase filtering.
+
+Comparison between L-normalized, M-normalized, and MATLAB’s built-in resample function.
+
+Includes FFT-based spectral analysis and audio playback of original and resampled signals.
+
+[Subfolder README provides detailed instructions for usage.]
+
+Exercise 2 – Short-Time Fourier Transform & Time-Varying Filtering
+
+Implementation of STFT and ISTFT for time-frequency analysis and reconstruction.
+
+Time-varying filtering of audio signals using both frequency-domain processing and traditional FIR filtering.
+
+Analysis of reconstruction errors (SNR) and visualization of filtered signals.
+
+[Subfolder README provides detailed instructions for usage.]
+
+Usage
+
+Navigate to the subfolder of the exercise you want to run.
+
+Open the main script (main.m) and ensure the audio file paths are correct for your system.
+
+Run the script in MATLAB to visualize results and listen to audio outputs.
