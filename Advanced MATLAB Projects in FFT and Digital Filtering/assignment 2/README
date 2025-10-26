@@ -1,1 +1,6 @@
 
+This assignment focuses on two key areas in digital signal processing:
+
+Designing and implementing a digital Butterworth filter for noise removal(z_filt.m).
+
+Analyzing spectral resolution using different window functions (Rectangular, Hann, and Kaiser) in FFT-based frequency estimation(ex2_2.m).
