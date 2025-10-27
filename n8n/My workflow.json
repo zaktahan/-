@@ -1,0 +1,135 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "seconds"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "452a35ae-e6b8-4701-bfb1-5de08fe0b14a",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appAS6TqiVz55Kd7l",
+          "mode": "list",
+          "cachedResultName": "airtable test",
+          "cachedResultUrl": "https://airtable.com/appAS6TqiVz55Kd7l"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblHVyQQflAeLdREL",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appAS6TqiVz55Kd7l/tblHVyQQflAeLdREL"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "fa6f1e06-2756-4c9d-ab74-64d01ea770e3",
+      "name": "Search records",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "cchyfMj8pwvgMlss",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "ROOM",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "070b31c1-f20f-4f3a-a17d-17df2607bd1a",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "C:\\Users\\zakta\\OneDrive\\שולחן העבודה\\airbase.txt",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        624,
+        0
+      ],
+      "id": "08d32b0a-a663-43ca-afdd-ea067eb83e30",
+      "name": "Read/Write Files from Disk"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Search records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search records": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "323143d3-7910-496e-b13c-168d18f7e747",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0e8b81cae3a5b85af5178ef1a01332919a4cd7fccc015567255c1853347681b8"
+  },
+  "id": "u12V8EahwBbzqPfv",
+  "tags": []
+}
