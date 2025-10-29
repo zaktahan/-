@@ -1,0 +1,257 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "review",
+        "formDescription": "satisfied?",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "name",
+              "placeholder": "your name:",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "comment:",
+              "placeholder": "your comment:",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ebc9077d-e200-42b7-abd8-2bd06d7079e9",
+      "name": "On form submission",
+      "webhookId": "9170d505-a77e-4a94-99da-25dc82e228f5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json['comment:'] }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "you are an expert in centiment analyzer\nyou conduct evaluation and decide which of thos are the most accurate review:\npositive\nnegative\nneutral\nyou respond only one word"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        304,
+        64
+      ],
+      "id": "8f1eef4c-b003-4740-bc60-8be8ff667365",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -80,
+        240
+      ],
+      "id": "2e537be3-e458-4ee6-87f6-d35b49143185",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "HK5X6h5g8njvO5Pt",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        624,
+        -32
+      ],
+      "id": "d34b7322-2514-4958-b607-d8c95f976682",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1X1hiYLCHuxIzVVcv99m5uO7T1eB6gvNa3LNwguK-f-I",
+          "mode": "list",
+          "cachedResultName": "test",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1X1hiYLCHuxIzVVcv99m5uO7T1eB6gvNa3LNwguK-f-I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "גיליון1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1X1hiYLCHuxIzVVcv99m5uO7T1eB6gvNa3LNwguK-f-I/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.name }}",
+            "Review": "={{ $json.text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Review",
+              "displayName": "Review",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        800,
+        32
+      ],
+      "id": "b79e5826-74d4-4fce-bafa-d40e57386685",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "9FHA8d3CHAS2JwTQ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "zaktahan@gmail.com",
+        "subject": "revie",
+        "message": "={{ $json.name }} sent a {{ $json.text }} review:\n{{ $json['comment:'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        432,
+        256
+      ],
+      "id": "0c7fc1bf-fe2e-4bbf-a71f-cc78b6f977b4",
+      "name": "Send a message",
+      "webhookId": "71d025c8-e026-4bad-b1f7-250b32204517",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "HaL4rhXTF2JEE0sw",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d4561086-9dd5-48bc-a7a2-914ae3aec7cc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "15665e55c5d9383110aed8ec37b111ca999ec3da26328615c6405cc97acd60bf"
+  },
+  "id": "EWDaYmANHmmc2Ks6",
+  "tags": []
+}
