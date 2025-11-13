@@ -1,0 +1,1456 @@
+{
+  "name": "shiduhim_creating sheet",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "ברוך הבא",
+        "formDescription": "אנא מלא את הפרטים שלך בשביל שנוכל למצוא את השידוך הכי מתאים עבורך",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "שם:",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "מין",
+              "fieldType": "checkbox",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "זכר"
+                  },
+                  {
+                    "option": "נקבה"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "גיל:",
+              "fieldType": "number",
+              "placeholder": "ערך מספרי בלבד",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "גובה",
+              "fieldType": "number",
+              "placeholder": "ערך מספרי בלבד",
+              "requiredField": "={{ true }}"
+            },
+            {
+              "fieldLabel": "רמה דתית",
+              "fieldType": "checkbox",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "חילוני"
+                  },
+                  {
+                    "option": "מסורתי"
+                  },
+                  {
+                    "option": "דתי לייט"
+                  },
+                  {
+                    "option": "דתי לאומי"
+                  },
+                  {
+                    "option": "חרדי מודרני"
+                  },
+                  {
+                    "option": "חרדי"
+                  }
+                ]
+              },
+              "limitSelection": "range",
+              "minSelections": 1,
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "עדה",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "קצת על עצמי:",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "מה אני מחפש/ת",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "טווח גילאים מינימלי (מספרי בלבד)",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "טווח גילאים מקסימלי (מספרי בלבד)",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "רמה דתית רצוייה",
+              "fieldType": "checkbox",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "חילוני"
+                  },
+                  {
+                    "option": "מסורתי"
+                  },
+                  {
+                    "option": "דתי לייט"
+                  },
+                  {
+                    "option": "דתי לאומי"
+                  },
+                  {
+                    "option": "חרדי מודרני"
+                  },
+                  {
+                    "option": "חרדי"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldName": "סטטוס",
+              "fieldType": "hiddenField",
+              "fieldValue": "פנוי"
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -480,
+        -160
+      ],
+      "id": "cf4ccbe4-aec5-4b32-9e71-af1cb8c2f153",
+      "name": "On form submission",
+      "webhookId": "25c62361-8a73-4897-aa70-18592e7d0341"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json['קצת על עצמי:'] }}{{ $json['מה אני מחפש/ת'] }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "אתה מערכת לתיוג אנשים לצורך שידוכים. תקבל שני טקסטים בעברית:  תיאור עצמי  מה האדם מחפש. תנתח את שני הטקסטים ותחזיר רשימת תכונות מתוך הרשימה הסגורה הבאה בלבד: [\"רגיש\", \"רציני\", \"מצחיק\", \"כיפי\", \"שקט\", \"ביישן\", \"מנהיג\", \"בשלנית\", \"משפחתית\", \"פתוח\", \"רוחני\", \"יציב רגשית\", \"חברותי\", \"שאפתן\", \"אמין\", \"צנוע\"]. החזר את התשובה במבנה JSON בלבד כך:  {   \"labels_self\": [\"...\", \"...\"],   \"labels_wanted\": [\"...\", \"...\"] }\nאם אתה מתלבט האם לכלול תכונה מסוימת — עדיף שתכלול אותה מאשר שלא תכלול, כל עוד היא מתאימה."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -192,
+        -160
+      ],
+      "id": "1f4a6222-ea1c-4fe9-a3f1-a06d7014614d",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        224,
+        -160
+      ],
+      "id": "40a01f87-4f06-4ec2-9555-33c6d87fe426",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -256,
+        80
+      ],
+      "id": "ad19666c-2bdb-4bb7-9c38-8928c88afc4f",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "SjFVRnENkf6KtkkO",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw",
+          "mode": "list",
+          "cachedResultName": "shiduhim",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "גיליון1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "שם": "={{ $json['שם:'] }}",
+            "גיל": "={{ $json['גיל:'] }}",
+            "גובה": "={{ $json['גובה'] }}",
+            "עדה": "={{ $json['עדה'] }}",
+            "מה אני מחפש/ת": "={{ $json['מה אני מחפש/ת'] }}",
+            "text": "={{ $json.text }} ",
+            "קצת על עצמי": "={{ $json['קצת על עצמי:'] }}",
+            "רמה דתית": "={{ $json['רמה דתית'][0] }}",
+            "רמה דתית רצוייה": "={{ $json['רמה דתית רצוייה'][0] }}",
+            "סטטוס": "={{ $json['סטטוס'] }}",
+            "מין": "={{ $json['מין'][0] }}",
+            "טווח גילאים רצוי": "={{ $json['טווח גילאים מינימלי (מספרי בלבד)'] }}-{{ $json['טווח גילאים מקסימלי (מספרי בלבד)'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "index",
+              "displayName": "index",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "שם",
+              "displayName": "שם",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "מין",
+              "displayName": "מין",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "גיל",
+              "displayName": "גיל",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "גובה",
+              "displayName": "גובה",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "רמה דתית",
+              "displayName": "רמה דתית",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "עדה",
+              "displayName": "עדה",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "קצת על עצמי",
+              "displayName": "קצת על עצמי",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "מה אני מחפש/ת",
+              "displayName": "מה אני מחפש/ת",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "טווח גילאים רצוי",
+              "displayName": "טווח גילאים רצוי",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "רמה דתית רצוייה",
+              "displayName": "רמה דתית רצוייה",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "סטטוס",
+              "displayName": "סטטוס",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        464,
+        -160
+      ],
+      "id": "01877baa-92f1-49d6-97fc-407366181be1",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "49y6ScPHxEi3wNdy",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=TARGET.text:\n{{ $('Merge').item.json.text }}\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You run exactly once. Do not loop per item.\nYou must be precise.\nTarget profile is provided in the user prompt. Use ONLY this target to match against the candidate pool you already have access to in memory. Do NOT ask for the sheet. Do NOT request more data. Do NOT describe your steps.\n\nScoring rule (text-only):\n- Compare candidate.text to TARGET.text. Use semantic similarity.\n- Prefer higher similarity and clearer label matches.\n- Break ties arbitrarily but deterministically.\n\nOutput rule:\n- Return ONLY the indexes of the TOP 5 candidates for THIS TARGET.\n- One integer per line.\n- Exactly five lines.\n- No extra text, no punctuation, no JSON.\n8. Output format example (no quotes):\nyour output should looks like for example \"1\\n2\\n7\\n21\\n26\" so {{ $('AI Agent').item.json.output.split('\\n')[0] }} will get me the \"1\" argument and {{ $('AI Agent').item.json.output.split('\\n')[4] }} will get me the 26 argument\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        2528,
+        -160
+      ],
+      "id": "262d2ee6-df84-49cf-a3d5-79a9731c540d",
+      "name": "AI Agent",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "n8nshiduhim",
+          "mode": "list",
+          "cachedResultName": "n8nshiduhim"
+        },
+        "options": {
+          "pineconeNamespace": "teslan8n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        2512,
+        448
+      ],
+      "id": "4ad9d3c8-57ff-4559-ba47-252911a3738b",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "RvnkrF6wzskSDNWS",
+          "name": "PineconeApi account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2528,
+        688
+      ],
+      "id": "ad081e54-7da1-4cfb-a9fe-c7471b515a43",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "SjFVRnENkf6KtkkO",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2704,
+        320
+      ],
+      "id": "3004cf29-7a2f-49c1-b4e9-3bdef07033d1",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "SjFVRnENkf6KtkkO",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "return documents related to tesla q2 q3 the finantial the outlook marges and everything important from the earning report\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1.1,
+      "position": [
+        2544,
+        192
+      ],
+      "id": "11f62d32-2ae3-4d67-8dfc-7e47cb6e936a",
+      "name": "talia"
+    },
+    {
+      "parameters": {
+        "resource": "spreadsheet",
+        "title": "=מועמדים רלוונטים ל {{ $('On form submission').item.json['שם:'] }}",
+        "sheetsUi": {
+          "sheetValues": [
+            {
+              "title": "=מועמדים רלוונטים ל {{ $('On form submission').item.json['שם:'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3120,
+        -160
+      ],
+      "id": "0ecb7412-86ce-4e2e-b95a-a33cf65c18cc",
+      "name": "Create spreadsheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "49y6ScPHxEi3wNdy",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw",
+          "mode": "list",
+          "cachedResultName": "shiduhim",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "גיליון1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "index",
+              "lookupValue": "={{ Number($('AI Agent').item.json.output.split('\\n')[0]) }}"
+            },
+            {
+              "lookupColumn": "index",
+              "lookupValue": "={{ Number($('AI Agent').item.json.output.split('\\n')[1]) }}"
+            },
+            {
+              "lookupColumn": "index",
+              "lookupValue": "={{ Number($('AI Agent').item.json.output.split('\\n')[2]) }}"
+            },
+            {
+              "lookupColumn": "index",
+              "lookupValue": "={{ Number($('AI Agent').item.json.output.split('\\n')[3]) }}"
+            },
+            {
+              "lookupColumn": "index",
+              "lookupValue": "={{ Number($('AI Agent').item.json.output.split('\\n')[4]) }}"
+            }
+          ]
+        },
+        "combineFilters": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3280,
+        -64
+      ],
+      "id": "1d65d5f8-9f6d-401c-865a-9568ad34b39a",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "49y6ScPHxEi3wNdy",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw",
+          "mode": "list",
+          "cachedResultName": "shiduhim",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "גיליון1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "שם": "={{ $('On form submission').item.json['שם:'] }}",
+            "link": "={{ $json.spreadsheetUrl }}",
+            "text": "={{ $('Merge').item.json.text }}",
+            "index": "={{ $('Merge').item.json['שם:'] }}",
+            "מין": "={{ $('Merge').item.json['מין'][0] }}",
+            "גיל": "={{ $('Merge').item.json['גיל:'] }}",
+            "גובה": "={{ $('Merge').item.json['גובה'] }}",
+            "רמה דתית": "={{ $('Merge').item.json['רמה דתית'][0] }}",
+            "עדה": "={{ $('Merge').item.json['עדה'] }}",
+            "קצת על עצמי": "={{ $('Merge').item.json['קצת על עצמי:'] }}",
+            "מה אני מחפש/ת": "={{ $('Merge').item.json['מה אני מחפש/ת'] }}",
+            "טווח גילאים רצוי": "={{ $('Merge').item.json['טווח גילאים מינימלי (מספרי בלבד)'] }}-{{ $('Merge').item.json['טווח גילאים מקסימלי (מספרי בלבד)'] }}",
+            "רמה דתית רצוייה": "={{ $('Merge').item.json['רמה דתית רצוייה'][0] }}",
+            "סטטוס": "={{ $('Merge').item.json['סטטוס'] }}"
+          },
+          "matchingColumns": [
+            "שם"
+          ],
+          "schema": [
+            {
+              "id": "index",
+              "displayName": "index",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "שם",
+              "displayName": "שם",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "מין",
+              "displayName": "מין",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "גיל",
+              "displayName": "גיל",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "גובה",
+              "displayName": "גובה",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "רמה דתית",
+              "displayName": "רמה דתית",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "עדה",
+              "displayName": "עדה",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "קצת על עצמי",
+              "displayName": "קצת על עצמי",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "מה אני מחפש/ת",
+              "displayName": "מה אני מחפש/ת",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "טווח גילאים רצוי",
+              "displayName": "טווח גילאים רצוי",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "רמה דתית רצוייה",
+              "displayName": "רמה דתית רצוייה",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "סטטוס",
+              "displayName": "סטטוס",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3872,
+        -160
+      ],
+      "id": "e08aa33b-5c50-4325-8988-3a497a3594c8",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "49y6ScPHxEi3wNdy",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "spreadsheetUrl",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        3696,
+        -160
+      ],
+      "id": "faa93c24-b21f-4abf-8de7-5d980d0201e9",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2272,
+        208
+      ],
+      "id": "1a818ae0-3f01-447c-ae5e-2c472a135d76",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "SjFVRnENkf6KtkkO",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create spreadsheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create spreadsheet').item.json.properties.title }}",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "index": "={{ $json.index }}",
+            "שם": "={{ $json['שם'] }}",
+            "מין": "={{ $json['מין'] }}",
+            "גיל": "={{ $json['גיל'] }}",
+            "גובה": "={{ $json['גובה'] }}",
+            "רמה דתית": "={{ $json['רמה דתית'] }}",
+            "עדה": "={{ $json['עדה'] }}",
+            "קצת על עצמי": "={{ $json['קצת על עצמי'] }}",
+            "מה אני מחפש/ת": "={{ $json['מה אני מחפש/ת'] }}",
+            "טווח גילאים רצוי": "={{ $json['טווח גילאים רצוי'] }}",
+            "רמה דתית רצוייה": "={{ $json['רמה דתית רצוייה'] }}",
+            "text": "={{ $json.text }}",
+            "link": "={{ $json.link }}",
+            "סטטוס": "={{ $json['סטטוס'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "index",
+              "displayName": "index",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "שם",
+              "displayName": "שם",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "מין",
+              "displayName": "מין",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "גיל",
+              "displayName": "גיל",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "גובה",
+              "displayName": "גובה",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "רמה דתית",
+              "displayName": "רמה דתית",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "עדה",
+              "displayName": "עדה",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "קצת על עצמי",
+              "displayName": "קצת על עצמי",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "מה אני מחפש/ת",
+              "displayName": "מה אני מחפש/ת",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "טווח גילאים רצוי",
+              "displayName": "טווח גילאים רצוי",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "רמה דתית רצוייה",
+              "displayName": "רמה דתית רצוייה",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "סטטוס",
+              "displayName": "סטטוס",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3504,
+        -160
+      ],
+      "id": "5f0e9b3b-f5fb-41ef-81f5-d4000951ab75",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "49y6ScPHxEi3wNdy",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw",
+          "mode": "list",
+          "cachedResultName": "shiduhim",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "גיליון1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "מין",
+              "lookupValue": "={{ $json['מין'] === 'זכר' ? 'נקבה' : 'זכר' }}"
+            }
+          ]
+        },
+        "combineFilters": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        1248,
+        576
+      ],
+      "id": "6a04d390-9e98-48ef-b461-7575c862884f",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "49y6ScPHxEi3wNdy",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6c72051f-8961-44da-a1a4-236f8de45893",
+              "leftValue": "={{ $json['גיל'] }}",
+              "rightValue": "={{ $('Merge').item.json['טווח גילאים מינימלי (מספרי בלבד)'] -1}}",
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "ef12d157-f928-4064-acae-853996ac98ad",
+              "leftValue": "={{ $json['גיל'] }}",
+              "rightValue": "={{ $('Merge').item.json['טווח גילאים מקסימלי (מספרי בלבד)'] +1}}",
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            },
+            {
+              "id": "fa8c2ec1-e4ea-4da7-807c-78eaaf60343f",
+              "leftValue": "={{   ['דתי לאומי', 'דתי לייט'].includes($json['רמה דתית רצוייה'])     ? ['דתי לאומי', 'דתי לייט']   : ['חרדי', 'חרדי מודרני'].includes($json['רמה דתית רצוייה'])     ? ['חרדי', 'חרדי מודרני']   : ['מסורתי', 'דתי לייט'].includes($json['רמה דתית רצוייה'])     ? ['מסורתי', 'דתי לייט']   : [$json['רמה דתית רצוייה']] }}",
+              "rightValue": "={{ $json['רמה דתית'] }}",
+              "operator": {
+                "type": "array",
+                "operation": "contains",
+                "rightType": "any"
+              }
+            },
+            {
+              "id": "8bf0e5d5-2e4b-410e-b628-f2c005f2ac5b",
+              "leftValue": "={{   ['דתי לאומי', 'דתי לייט'].includes($json['רמה דתית'])     ? ['דתי לאומי', 'דתי לייט']   : ['חרדי', 'חרדי מודרני'].includes($json['רמה דתית'])     ? ['חרדי', 'חרדי מודרני']   : ['מסורתי', 'דתי לייט'].includes($json['רמה דתית'])     ? ['מסורתי', 'דתי לייט']   : [$json['רמה דתית']] }}",
+              "rightValue": "={{ $json['רמה דתית רצוייה'] }}",
+              "operator": {
+                "type": "array",
+                "operation": "contains",
+                "rightType": "any"
+              }
+            },
+            {
+              "id": "ac161eda-8202-4262-b593-952080556970",
+              "leftValue": "={{\n  (() => {\n    const parts = $json['טווח גילאים רצוי'].toString().split('-');\n    const min = Number(parts[0]) - 1;\n    const max = Number(parts[1]) + 1;\n    return Array.from({ length: max - min + 1 }, (_, i) => min + i);\n  })()\n}}\n\n",
+              "rightValue": "={{ $('Merge').item.json['גיל:'] }}",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "7134debb-525f-41c7-8c84-c7038de0b40e",
+              "leftValue": "={{ $json['סטטוס'] }}",
+              "rightValue": "={{ $('Merge').item.json['סטטוס'] }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1440,
+        -160
+      ],
+      "id": "38566af6-abf2-4dc8-98cf-2b316c15900f",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw",
+          "mode": "list",
+          "cachedResultName": "shiduhim",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "גיליון1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "מין",
+              "lookupValue": "={{ $json['מין'] === 'זכר' ? 'נקבה' : 'זכר' }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        -160
+      ],
+      "id": "f1f97530-6721-44f9-a98d-19558e30e72a",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "49y6ScPHxEi3wNdy",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://sheets.googleapis.com/v4/spreadsheets/{{ $('Create spreadsheet').item.json.spreadsheetId }}:batchUpdate\n",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleSheetsOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"requests\": [\n    {\n      \"repeatCell\": {\n        \"range\": {\n          \"sheetId\": {{ $('Create spreadsheet').item.json.sheets[0].properties.sheetId }},\n          \"startRowIndex\": 1,\n          \"endRowIndex\": {{ $('Append row in sheet1').all().length + 1 }}\n        },\n        \"cell\": {\n          \"userEnteredFormat\": {\n            \"backgroundColor\": {\n              \"red\": 1,\n              \"green\": 1,\n              \"blue\": 0\n            }\n          }\n        },\n        \"fields\": \"userEnteredFormat.backgroundColor\"\n      }\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        4080,
+        -144
+      ],
+      "id": "a986c674-f195-41c0-9a8e-2294a19d38d9",
+      "name": "HTTP Request",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "49y6ScPHxEi3wNdy",
+          "name": "Google Sheets account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "שם:": "תמר",
+          "מין": [
+            "נקבה"
+          ],
+          "גיל:": 25,
+          "גובה": 164,
+          "רמה דתית": [
+            "דתי לאומי"
+          ],
+          "עדה": "ספרדית מעורבת",
+          "קצת על עצמי:": "עיסוק: סטודנטית לפסיכולוגיה + עובדת בחינוך  קצת על עצמי: אני בחורה רגועה וממוקדת, אוהבת אנשים ושיחות אמיתיות. מעריכה פשטות ויופי של היום־יום. אוהבת לקרוא, לצייר כשיש השראה, ולטייל בטבע עם מוזיקה טובה באוזניים. משתדלת לשמור על איזון בין עולם הרוח לעולם המעשה, ולגדול דרך לימוד, חברות וקשר אנושי.",
+          "מה אני מחפש/ת": "מה אני מחפשת: בחור רציני אך לא כבד, שמח מבפנים, שחושב על בניית בית אמיתי. חשוב לי מישהו שמקשיב, יודע להתחשב, ורוצה קשר של עומק, נוכחות ואמון. מישהו שרואה את החיים כדרך משותפת ולא כמרדף.",
+          "טווח גילאים מינימלי (מספרי בלבד)": 20,
+          "טווח גילאים מקסימלי (מספרי בלבד)": 30,
+          "רמה דתית רצוייה": [
+            "דתי לייט"
+          ],
+          "סטטוס": "פנוי",
+          "submittedAt": "2025-11-06T12:28:25.261+02:00",
+          "formMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Create spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "talia",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "talia",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "talia": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5947502b-a384-4cd0-981a-01e05642f5c1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "15665e55c5d9383110aed8ec37b111ca999ec3da26328615c6405cc97acd60bf"
+  },
+  "id": "BEn0Pray1JaABw1u",
+  "tags": []
+}

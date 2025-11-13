@@ -1,0 +1,609 @@
+{
+  "name": "טופס עדכון הצעה",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "פרטי הצעת שידוך",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "הצענו שידוך ל:",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "מספר משודך(ערך מספרי בלבד)",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "הצענו את:",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "מספר משודך שהצענו(ערך מספרי בלבד)",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "מה קרה?",
+              "placeholder": "סטטוס",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        0,
+        128
+      ],
+      "id": "889c57e9-5cfe-421a-a45e-e5cfc7d12c7d",
+      "name": "טופס עדכון הצעת שידוך",
+      "webhookId": "d2c3d59c-28a1-4c46-bdc4-dc99b0b37605"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw",
+          "mode": "list",
+          "cachedResultName": "shiduhim",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "גיליון1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "index",
+              "lookupValue": "={{ $json['מספר משודך(ערך מספרי בלבד)'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        240,
+        48
+      ],
+      "id": "dd6db64d-0ae6-4b61-8478-59f27a757a57",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "49y6ScPHxEi3wNdy",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw",
+          "mode": "list",
+          "cachedResultName": "shiduhim",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "גיליון1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1c_oXZiJ8fSjx74IBeNDZrDGDaRIphTbUSp4sxk8NGCw/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "index",
+              "lookupValue": "={{ $('טופס עדכון הצעת שידוך').item.json['מספר משודך שהצענו(ערך מספרי בלבד)'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        48
+      ],
+      "id": "fd88ee38-9295-4783-a4c9-910905445c60",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "49y6ScPHxEi3wNdy",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Get row(s) in sheet').item.json.link }}",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "=מועמדים רלוונטים ל {{ $('Get row(s) in sheet').item.json['שם'] }}",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "index": "={{ $json.index }}",
+            "שם": "={{ $json['שם'] }}",
+            "גיל": "={{ $json['גיל'] }}",
+            "גובה": "={{ $json['גובה'] }}",
+            "רמה דתית": "={{ $json['רמה דתית'] }}",
+            "עדה": "={{ $json['עדה'] }}",
+            "קצת על עצמי": "={{ $json['קצת על עצמי'] }}",
+            "מה אני מחפש/ת": "={{ $json['מה אני מחפש/ת'] }}",
+            "טווח גילאים רצוי": "={{ $json['טווח גילאים רצוי'] }}",
+            "רמה דתית רצוייה": "={{ $json['רמה דתית רצוייה'] }}",
+            "text": "={{ $json.text }}",
+            "link": "={{ $json.link }}",
+            "מין": "={{ $json['מין'] }}",
+            "סטטוס": "={{ $('טופס עדכון הצעת שידוך').item.json['מה קרה?'] }}"
+          },
+          "matchingColumns": [
+            "index"
+          ],
+          "schema": [
+            {
+              "id": "index",
+              "displayName": "index",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "שם",
+              "displayName": "שם",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "גיל",
+              "displayName": "גיל",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "גובה",
+              "displayName": "גובה",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "רמה דתית",
+              "displayName": "רמה דתית",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "עדה",
+              "displayName": "עדה",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "קצת על עצמי",
+              "displayName": "קצת על עצמי",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "מה אני מחפש/ת",
+              "displayName": "מה אני מחפש/ת",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "טווח גילאים רצוי",
+              "displayName": "טווח גילאים רצוי",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "רמה דתית רצוייה",
+              "displayName": "רמה דתית רצוייה",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "מין",
+              "displayName": "מין",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "סטטוס",
+              "displayName": "סטטוס",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "תאריך הוספה",
+              "displayName": "תאריך הוספה",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "כמה זמן עבר מאז הניסיון האחרון",
+              "displayName": "כמה זמן עבר מאז הניסיון האחרון",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "תאריך ניסיון אחרון",
+              "displayName": "תאריך ניסיון אחרון",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        656,
+        48
+      ],
+      "id": "ed2a1a48-1539-4251-a843-8d3ba0be4810",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "49y6ScPHxEi3wNdy",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.link }}",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "=מועמדים רלוונטים ל {{ $json['שם'] }}",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "index": "={{ $('Get row(s) in sheet').item.json.index }}",
+            "שם": "={{ $('Get row(s) in sheet').item.json['שם'] }}",
+            "מין": "={{ $('Get row(s) in sheet').item.json['מין'] }}",
+            "גיל": "={{ $('Get row(s) in sheet').item.json['גיל'] }}",
+            "גובה": "={{ $('Get row(s) in sheet').item.json['גובה'] }}",
+            "רמה דתית": "={{ $('Get row(s) in sheet').item.json['רמה דתית'] }}",
+            "עדה": "={{ $('Get row(s) in sheet').item.json['עדה'] }}",
+            "קצת על עצמי": "={{ $('Get row(s) in sheet').item.json['קצת על עצמי'] }}",
+            "מה אני מחפש/ת": "={{ $('Get row(s) in sheet').item.json['מה אני מחפש/ת'] }}",
+            "טווח גילאים רצוי": "={{ $('Get row(s) in sheet').item.json['טווח גילאים רצוי'] }}",
+            "רמה דתית רצוייה": "={{ $('Get row(s) in sheet').item.json['רמה דתית רצוייה'] }}",
+            "text": "={{ $('Get row(s) in sheet').item.json.text }}",
+            "link": "={{ $('Get row(s) in sheet').item.json.link }}",
+            "סטטוס": "={{ $('טופס עדכון הצעת שידוך').item.json['מה קרה?'] }}"
+          },
+          "matchingColumns": [
+            "index"
+          ],
+          "schema": [
+            {
+              "id": "index",
+              "displayName": "index",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "שם",
+              "displayName": "שם",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "מין",
+              "displayName": "מין",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "גיל",
+              "displayName": "גיל",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "גובה",
+              "displayName": "גובה",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "רמה דתית",
+              "displayName": "רמה דתית",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "עדה",
+              "displayName": "עדה",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "קצת על עצמי",
+              "displayName": "קצת על עצמי",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "מה אני מחפש/ת",
+              "displayName": "מה אני מחפש/ת",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "טווח גילאים רצוי",
+              "displayName": "טווח גילאים רצוי",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "רמה דתית רצוייה",
+              "displayName": "רמה דתית רצוייה",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "סטטוס",
+              "displayName": "סטטוס",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        880,
+        48
+      ],
+      "id": "c21fec43-f9cf-4603-8c85-77518873544e",
+      "name": "Append or update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "49y6ScPHxEi3wNdy",
+          "name": "Google Sheets account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "טופס עדכון הצעת שידוך": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "61ac3af0-cb91-4509-9c1d-ed12b6e76550",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "15665e55c5d9383110aed8ec37b111ca999ec3da26328615c6405cc97acd60bf"
+  },
+  "id": "AMlRQgkzikmtIR37",
+  "tags": []
+}
